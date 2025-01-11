@@ -7,14 +7,17 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-//?Middle wair
-app.use(cors({ origin: '*' }))
+
+// Middleware
+app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
-//? setting static folder path
+
+// Static folder paths
 app.use('/image/products', express.static('public/products'));
 app.use('/image/category', express.static('public/category'));
 app.use('/image/poster', express.static('public/posters'));
 
+// MongoDB Connection
 const URL = process.env.MONGO_URL;
 mongoose.connect(URL);
 const db = mongoose.connection;
@@ -35,8 +38,7 @@ app.use('/orders', require('./routes/order'));
 app.use('/payment', require('./routes/payment'));
 app.use('/notification', require('./routes/notification'));
 
-
-// Example route using asyncHandler directly in app.js
+// Example route using asyncHandler
 app.get('/', asyncHandler(async (req, res) => {
     res.json({ success: true, message: 'API working successfully', data: null });
 }));
@@ -46,9 +48,8 @@ app.use((error, req, res, next) => {
     res.status(500).json({ success: false, message: error.message, data: null });
 });
 
-
-app.listen(process.env.PORT, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+// Dynamic port handling by Render
+const PORT = process.env.PORT || 3000;  // 3000 as fallback for local development
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
-
-
