@@ -48,8 +48,3 @@ app.use((error, req, res, next) => {
     res.status(500).json({ success: false, message: error.message, data: null });
 });
 
-// Dynamic port handling by Render
-const PORT = process.env.PORT || 3000;  // 3000 as fallback for local development
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
